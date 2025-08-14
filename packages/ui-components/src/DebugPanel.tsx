@@ -1,6 +1,6 @@
 import { whiteboardStore } from "@usketch/store";
-import type React from "react";
-import { useEffect, useState } from "react";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
 
 interface DebugInfo {
 	currentTool: string;
@@ -11,7 +11,7 @@ interface DebugInfo {
 	mousePosition: { x: number; y: number };
 }
 
-export const DebugPanel: React.FC = () => {
+export const DebugPanel: FC = () => {
 	const [debugInfo, setDebugInfo] = useState<DebugInfo>({
 		currentTool: "",
 		shapeCount: 0,
