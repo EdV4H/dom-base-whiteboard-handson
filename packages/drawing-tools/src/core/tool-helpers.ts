@@ -1,5 +1,5 @@
 import type { Point } from "@usketch/shared-types";
-import type { Tool, ToolDefinition } from "./tool-types";
+import type { Tool } from "./tool-types";
 
 /**
  * Higher-order function to add snapping functionality to a tool

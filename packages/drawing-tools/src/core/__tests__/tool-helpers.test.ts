@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createTool } from "../create-tool";
 import { createMachine } from "../state-machine";
-import { compose, getRectBounds, setCursor, withConstraints, withSnapping } from "../tool-helpers";
+import { compose, getRectBounds, setCursor, withSnapping } from "../tool-helpers";
 import type { ToolEvent, ToolState } from "../tool-types";
 
 // Mock DOM events for Node environment
@@ -40,7 +40,7 @@ describe("Tool Helpers", () => {
 			const tool = createMockTool();
 			const handlePointerDownSpy = vi.spyOn(tool, "handlePointerDown");
 
-			const snappedTool = withSnapping({ gridSize: 10, enabled: true })(tool);
+			const snappedTool = withSnapping<ToolState, any>({ gridSize: 10, enabled: true })(tool);
 			const event = new PointerEvent("pointerdown");
 
 			snappedTool.handlePointerDown({ x: 23, y: 47 }, event);
@@ -52,7 +52,7 @@ describe("Tool Helpers", () => {
 			const tool = createMockTool();
 			const handlePointerDownSpy = vi.spyOn(tool, "handlePointerDown");
 
-			const snappedTool = withSnapping({ gridSize: 10, enabled: false })(tool);
+			const snappedTool = withSnapping<ToolState, any>({ gridSize: 10, enabled: false })(tool);
 			const event = new PointerEvent("pointerdown");
 
 			snappedTool.handlePointerDown({ x: 23, y: 47 }, event);
@@ -62,7 +62,7 @@ describe("Tool Helpers", () => {
 
 		it("should snap all pointer events", () => {
 			const tool = createMockTool();
-			const snappedTool = withSnapping({ gridSize: 5, enabled: true })(tool);
+			const snappedTool = withSnapping<ToolState, any>({ gridSize: 5, enabled: true })(tool);
 
 			const handlePointerMoveSpy = vi.spyOn(tool, "handlePointerMove");
 			const handlePointerUpSpy = vi.spyOn(tool, "handlePointerUp");
@@ -83,10 +83,10 @@ describe("Tool Helpers", () => {
 			const tool = createMockTool();
 			const handlePointerDownSpy = vi.spyOn(tool, "handlePointerDown");
 
-			const enhancer1 = withSnapping({ gridSize: 10, enabled: true });
-			const enhancer2 = withSnapping({ gridSize: 5, enabled: true });
+			const enhancer1 = withSnapping<ToolState, any>({ gridSize: 10, enabled: true });
+			const enhancer2 = withSnapping<ToolState, any>({ gridSize: 5, enabled: true });
 
-			const composedTool = compose(enhancer1, enhancer2)(tool);
+			const composedTool = compose<ToolState, any>(enhancer1, enhancer2)(tool);
 			const event = new PointerEvent("pointerdown");
 
 			// Should apply enhancers from right to left
@@ -102,7 +102,9 @@ describe("Tool Helpers", () => {
 			const tool = createMockTool();
 			const handlePointerDownSpy = vi.spyOn(tool, "handlePointerDown");
 
-			const composedTool = compose(withSnapping({ gridSize: 10, enabled: true }))(tool);
+			const composedTool = compose<ToolState, any>(
+				withSnapping<ToolState, any>({ gridSize: 10, enabled: true }),
+			)(tool);
 
 			const event = new PointerEvent("pointerdown");
 			composedTool.handlePointerDown({ x: 14, y: 26 }, event);

@@ -75,12 +75,12 @@ export const createMachine = <TState extends string, TEvent extends { type: stri
 			}
 
 			const stateConfig = config.states[currentState];
-			const transition = stateConfig.on?.[event.type];
+			const transition = stateConfig.on?.[event.type as keyof typeof stateConfig.on];
 
 			if (!transition) return;
 
 			if (typeof transition === "string") {
-				transitionTo(transition);
+				transitionTo(transition as TState);
 			} else {
 				// Check condition
 				if (transition.cond && !transition.cond(event as any)) {

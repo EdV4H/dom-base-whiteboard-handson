@@ -1,4 +1,4 @@
-import { ToolManager } from "@usketch/drawing-tools";
+import { ToolManagerHybrid as ToolManager } from "@usketch/drawing-tools";
 import type { Camera, Shape } from "@usketch/shared-types";
 import {
 	applyCameraTransform,

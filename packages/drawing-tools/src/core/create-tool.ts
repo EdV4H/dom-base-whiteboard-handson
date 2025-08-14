@@ -1,5 +1,5 @@
 import type { Point } from "@usketch/shared-types";
-import type { Tool, ToolDefinition, ToolEvent } from "./tool-types";
+import type { Tool, ToolDefinition } from "./tool-types";
 
 /**
  * Creates a tool instance from a tool definition
@@ -15,10 +15,10 @@ export const createTool = <TState extends string, TContext = any>(
 	return {
 		id,
 		name,
-		icon,
-		cursor,
+		...(icon !== undefined && { icon }),
+		...(cursor !== undefined && { cursor }),
 		machine,
-		context,
+		...(context !== undefined && { context }),
 
 		handlePointerDown(point: Point, event: PointerEvent) {
 			machine.send({ type: "POINTER_DOWN", point, event });

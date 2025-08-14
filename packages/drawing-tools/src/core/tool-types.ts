@@ -50,8 +50,13 @@ export interface ToolDefinition<TState extends string = ToolState, TContext = an
 /**
  * Tool instance with event handlers
  */
-export interface Tool<TState extends string = ToolState, TContext = any>
-	extends ToolDefinition<TState, TContext> {
+export interface Tool<TState extends string = ToolState, TContext = any> {
+	id: string;
+	name: string;
+	icon?: string;
+	cursor?: string;
+	machine: StateMachine<TState, ToolEvent>;
+	context?: TContext;
 	handlePointerDown: (point: Point, event: PointerEvent) => void;
 	handlePointerMove: (point: Point, event: PointerEvent) => void;
 	handlePointerUp: (point: Point, event: PointerEvent) => void;

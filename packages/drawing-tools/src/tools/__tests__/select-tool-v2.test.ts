@@ -1,4 +1,3 @@
-import { whiteboardStore } from "@usketch/store";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createSelectTool } from "../select-tool-v2";
 
