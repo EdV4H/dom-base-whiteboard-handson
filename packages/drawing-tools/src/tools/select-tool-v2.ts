@@ -13,13 +13,7 @@ interface SelectContext {
 }
 
 // Create the state machine for select tool
-const createSelectMachine = () => {
-	const context: SelectContext = {
-		draggedShapeId: null,
-		dragStart: null,
-		shapeStartPosition: null,
-	};
-
+const createSelectMachine = (context: SelectContext) => {
 	return createMachine<SelectState, ToolEvent>({
 		id: "select",
 		initial: "idle",
@@ -120,7 +114,13 @@ const createSelectMachine = () => {
 
 // Create the select tool
 export const createSelectTool = () => {
-	const machine = createSelectMachine();
+	const context: SelectContext = {
+		draggedShapeId: null,
+		dragStart: null,
+		shapeStartPosition: null,
+	};
+
+	const machine = createSelectMachine(context);
 
 	return createTool({
 		id: "select",
@@ -128,5 +128,6 @@ export const createSelectTool = () => {
 		icon: "↖",
 		cursor: "default",
 		machine,
+		context,
 	});
 };

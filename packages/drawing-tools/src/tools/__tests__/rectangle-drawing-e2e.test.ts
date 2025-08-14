@@ -63,7 +63,9 @@ describe("Rectangle Tool Drawing E2E", () => {
 		expect(mockStore.addShape).toHaveBeenCalledTimes(1);
 
 		const firstShapeId = Object.keys(mockStore.shapes)[0];
-		expect(mockStore.shapes[firstShapeId]).toMatchObject({
+		expect(firstShapeId).toBeDefined();
+		expect(firstShapeId).toBeDefined();
+		expect(mockStore.shapes[firstShapeId!]).toMatchObject({
 			type: "rectangle",
 			x: 50,
 			y: 50,
@@ -73,7 +75,7 @@ describe("Rectangle Tool Drawing E2E", () => {
 
 		// Drag to create size
 		tool.handlePointerMove({ x: 150, y: 150 }, new PointerEvent("pointermove"));
-		expect(mockStore.updateShape).toHaveBeenCalledWith(firstShapeId, {
+		expect(mockStore.updateShape).toHaveBeenCalledWith(firstShapeId!, {
 			x: 50,
 			y: 50,
 			width: 100,
@@ -81,7 +83,7 @@ describe("Rectangle Tool Drawing E2E", () => {
 		});
 
 		// Verify the shape was updated
-		expect(mockStore.shapes[firstShapeId]).toMatchObject({
+		expect(mockStore.shapes[firstShapeId!]).toMatchObject({
 			x: 50,
 			y: 50,
 			width: 100,
@@ -97,7 +99,8 @@ describe("Rectangle Tool Drawing E2E", () => {
 
 		const secondShapeId = Object.keys(mockStore.shapes)[1];
 		tool.handlePointerMove({ x: 400, y: 250 }, new PointerEvent("pointermove"));
-		expect(mockStore.updateShape).toHaveBeenCalledWith(secondShapeId, {
+		expect(secondShapeId).toBeDefined();
+		expect(mockStore.updateShape).toHaveBeenCalledWith(secondShapeId!, {
 			x: 200,
 			y: 200,
 			width: 200,
@@ -108,11 +111,12 @@ describe("Rectangle Tool Drawing E2E", () => {
 
 		// Verify both rectangles exist with correct sizes
 		expect(Object.keys(mockStore.shapes).length).toBe(2);
-		expect(mockStore.shapes[firstShapeId]).toMatchObject({
+		expect(mockStore.shapes[firstShapeId!]).toMatchObject({
 			width: 100,
 			height: 100,
 		});
-		expect(mockStore.shapes[secondShapeId]).toMatchObject({
+		expect(secondShapeId).toBeDefined();
+		expect(mockStore.shapes[secondShapeId!]).toMatchObject({
 			width: 200,
 			height: 50,
 		});
@@ -127,7 +131,8 @@ describe("Rectangle Tool Drawing E2E", () => {
 		// Drag to top-left
 		tool.handlePointerMove({ x: 100, y: 100 }, new PointerEvent("pointermove"));
 
-		expect(mockStore.updateShape).toHaveBeenCalledWith(shapeId, {
+		expect(shapeId).toBeDefined();
+		expect(mockStore.updateShape).toHaveBeenCalledWith(shapeId!, {
 			x: 100,
 			y: 100,
 			width: 200,
@@ -136,7 +141,8 @@ describe("Rectangle Tool Drawing E2E", () => {
 
 		tool.handlePointerUp({ x: 100, y: 100 }, new PointerEvent("pointerup"));
 
-		expect(mockStore.shapes[shapeId]).toMatchObject({
+		expect(shapeId).toBeDefined();
+		expect(mockStore.shapes[shapeId!]).toMatchObject({
 			x: 100,
 			y: 100,
 			width: 200,
@@ -158,9 +164,10 @@ describe("Rectangle Tool Drawing E2E", () => {
 			{ x: 200, y: 150 },
 		];
 
+		expect(shapeId).toBeDefined();
 		movements.forEach((pos, index) => {
 			tool.handlePointerMove(pos, new PointerEvent("pointermove"));
-			expect(mockStore.updateShape).toHaveBeenNthCalledWith(index + 1, shapeId, {
+			expect(mockStore.updateShape).toHaveBeenNthCalledWith(index + 1, shapeId!, {
 				x: 0,
 				y: 0,
 				width: pos.x,
@@ -171,7 +178,8 @@ describe("Rectangle Tool Drawing E2E", () => {
 		tool.handlePointerUp({ x: 200, y: 150 }, new PointerEvent("pointerup"));
 
 		// Final size should match last movement
-		expect(mockStore.shapes[shapeId]).toMatchObject({
+		expect(shapeId).toBeDefined();
+		expect(mockStore.shapes[shapeId!]).toMatchObject({
 			width: 200,
 			height: 150,
 		});
@@ -188,7 +196,8 @@ describe("Rectangle Tool Drawing E2E", () => {
 		tool.handlePointerUp({ x: 102, y: 102 }, new PointerEvent("pointerup"));
 
 		// Should be removed because it's too small
-		expect(mockStore.removeShape).toHaveBeenCalledWith(shapeId);
+		expect(shapeId).toBeDefined();
+		expect(mockStore.removeShape).toHaveBeenCalledWith(shapeId!);
 		expect(Object.keys(mockStore.shapes).length).toBe(0);
 	});
 });
