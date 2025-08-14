@@ -1,4 +1,5 @@
 import { Canvas } from "@usketch/canvas-core";
+import { DebugPanelVanilla } from "@usketch/ui-components";
 import "./style.css";
 
 // Initialize the whiteboard
@@ -9,9 +10,15 @@ if (!canvasElement) {
 
 const whiteboard = new Canvas(canvasElement);
 
-// Expose store for E2E testing
+// Expose store and toolManager for E2E testing and debug panel
 if (typeof window !== "undefined") {
 	(window as any).store = whiteboard.getStore();
+	(window as any).toolManager = whiteboard.getToolManager();
+}
+
+// Initialize debug panel in development
+if (import.meta.env.DEV) {
+	new DebugPanelVanilla();
 }
 
 // Setup toolbar

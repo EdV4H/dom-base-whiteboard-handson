@@ -300,10 +300,22 @@ importers:
       '@usketch/shared-types':
         specifier: workspace:*
         version: link:../shared-types
+      '@usketch/store':
+        specifier: workspace:*
+        version: link:../store
     devDependencies:
+      '@types/node':
+        specifier: ^20.19.8
+        version: 20.19.8
+      '@types/react':
+        specifier: ^18.3.17
+        version: 18.3.23
       '@usketch/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
       typescript:
         specifier: ^5.7.3
         version: 5.8.3
@@ -2719,7 +2731,6 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
-    dev: false
 
   /loupe@3.1.4:
     resolution: {integrity: sha512-wJzkKwJrheKtknCOKNEtDK4iqg/MxmZheEMtSTYvnzRdEYaZzmgH976nenp8WdJRdx5Vc1X/9MO0Oszl6ezeXg==}
@@ -3012,7 +3023,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}

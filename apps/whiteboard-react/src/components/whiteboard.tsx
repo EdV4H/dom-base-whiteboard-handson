@@ -14,10 +14,11 @@ export const Whiteboard: React.FC = () => {
 		// Initialize canvas
 		canvasRef.current = new Canvas(containerRef.current);
 
-		// Expose store and canvas for debugging
+		// Expose store, canvas and toolManager for debugging
 		if (import.meta.env.DEV) {
 			(window as any).__whiteboardStore = whiteboardStore;
 			(window as any).__canvas = canvasRef.current;
+			(window as any).toolManager = canvasRef.current.getToolManager();
 		}
 
 		// Add test shapes only once (protect against StrictMode double render)

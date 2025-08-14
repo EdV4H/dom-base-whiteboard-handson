@@ -12,7 +12,7 @@ export const createTool = <TState extends string, TContext = any>(
 	// Start the state machine
 	machine.start();
 
-	return {
+	const tool = {
 		id,
 		name,
 		...(icon !== undefined && { icon }),
@@ -56,4 +56,10 @@ export const createTool = <TState extends string, TContext = any>(
 			return machine.state !== "idle";
 		},
 	};
+
+	console.log("createTool - tool.context:", tool.context);
+	console.log("createTool - context param:", context);
+	console.log("Are they the same?", tool.context === context);
+
+	return tool;
 };

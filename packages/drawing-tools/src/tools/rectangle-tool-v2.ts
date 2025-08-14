@@ -12,12 +12,7 @@ interface RectangleContext {
 }
 
 // Create the state machine for rectangle tool
-const createRectangleMachine = () => {
-	const context: RectangleContext = {
-		startPoint: null,
-		currentShapeId: null,
-	};
-
+const createRectangleMachine = (context: RectangleContext) => {
 	return createMachine<RectangleState, ToolEvent>({
 		id: "rectangle",
 		initial: "idle",
@@ -44,6 +39,11 @@ const createRectangleMachine = () => {
 							context.startPoint = point;
 							context.currentShapeId = `rect-${Date.now()}`;
 
+							console.log("POINTER_DOWN: Setting context", {
+								startPoint: context.startPoint,
+								currentShapeId: context.currentShapeId,
+							});
+
 							// Create initial rectangle
 							const newShape: RectangleShape = {
 								id: context.currentShapeId,
@@ -60,6 +60,9 @@ const createRectangleMachine = () => {
 							};
 
 							whiteboardStore.getState().addShape(newShape);
+							console.log("POINTER_DOWN: After setting, context is", context);
+							console.log("Context object ID:", context);
+							console.log("Context has marker?", (context as any).marker);
 						},
 					},
 				},
@@ -69,12 +72,25 @@ const createRectangleMachine = () => {
 					POINTER_MOVE: {
 						target: "drawing",
 						action: (event) => {
-							if (!context.startPoint || !context.currentShapeId) return;
+							console.log("POINTER_MOVE action called", {
+								context,
+								startPoint: context.startPoint,
+								currentShapeId: context.currentShapeId,
+								point: event.point,
+							});
+
+							if (!context.startPoint || !context.currentShapeId) {
+								console.log("Missing context data, returning");
+								console.log("Full context object:", context);
+								return;
+							}
 
 							const { point } = event;
 							const bounds = getRectBounds(context.startPoint, point);
+							console.log("Calculated bounds:", bounds);
 
 							whiteboardStore.getState().updateShape(context.currentShapeId, bounds);
+							console.log("Called updateShape");
 						},
 					},
 					POINTER_UP: {
@@ -115,13 +131,31 @@ const createRectangleMachine = () => {
 
 // Create the rectangle tool
 export const createRectangleTool = () => {
-	const machine = createRectangleMachine();
+	const context: RectangleContext = {
+		startPoint: null,
+		currentShapeId: null,
+	};
 
-	return createTool({
+	console.log("Creating tool with context:", context);
+	const machine = createRectangleMachine(context);
+
+	// Store the context on the machine itself
+	(machine as any)._context = context;
+
+	const tool = createTool({
 		id: "rectangle",
 		name: "Rectangle",
 		icon: "□",
 		cursor: "crosshair",
 		machine,
+		context,
 	});
+
+	console.log("Created tool, tool.context:", (tool as any).context);
+	console.log("Are contexts the same?", (tool as any).context === context);
+
+	// Add a getter to access the actual context used by the machine
+	(tool as any).getMachineContext = () => (machine as any)._context;
+
+	return tool;
 };

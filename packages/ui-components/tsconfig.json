@@ -7,6 +7,8 @@
 		"declaration": true,
 		"declarationMap": true,
 		"baseUrl": ".",
+		"jsx": "react",
+		"lib": ["ES2020", "DOM"],
 		"paths": {
 			"@whiteboard/shared-types": ["../shared-types/dist"]
 		}
