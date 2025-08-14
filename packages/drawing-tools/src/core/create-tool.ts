@@ -57,9 +57,5 @@ export const createTool = <TState extends string, TContext = any>(
 		},
 	};
 
-	console.log("createTool - tool.context:", tool.context);
-	console.log("createTool - context param:", context);
-	console.log("Are they the same?", tool.context === context);
-
 	return tool;
 };

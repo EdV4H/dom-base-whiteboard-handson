@@ -77,12 +77,7 @@ export const createMachine = <TState extends string, TEvent extends { type: stri
 			const stateConfig = config.states[currentState];
 			const transition = stateConfig.on?.[event.type as keyof typeof stateConfig.on];
 
-			if (!transition) {
-				console.log(
-					`[${config.id}] No transition for event ${event.type} in state ${currentState}`,
-				);
-				return;
-			}
+			if (!transition) return;
 
 			if (typeof transition === "string") {
 				transitionTo(transition as TState);
@@ -93,7 +88,6 @@ export const createMachine = <TState extends string, TEvent extends { type: stri
 				}
 
 				// Execute action
-				console.log(`[${config.id}] Executing action for ${event.type} in state ${currentState}`);
 				transition.action?.(event as any);
 
 				// Transition to target state
